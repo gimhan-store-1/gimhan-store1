@@ -1,301 +1,260 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gimhan Store</title>
+<!-- HEADER -->
+<div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <div class="logo">GIMHAN STORE</div>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
-body{background:#f5f5f5;}
-
-/* HEADER */
-.header{
-position:fixed;top:0;left:0;width:100%;height:70px;
-background:#fff;display:flex;justify-content:space-between;
-align-items:center;padding:0 15px;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-z-index:1000;
-}
-.logo{font-weight:800;color:#ff7300;}
-.menu-btn{font-size:28px;cursor:pointer;}
-.icons{font-size:22px;display:flex;gap:15px;cursor:pointer;}
-
-/* SIDEBAR */
-.sidebar{
-position:fixed;top:0;left:-280px;width:280px;height:100%;
-background:#fff;transition:0.35s;
-z-index:2000;box-shadow:3px 0 10px rgba(0,0,0,.2);
-}
-.sidebar.active{left:0;}
-.sidebar h2{background:#ff7300;color:#fff;padding:20px;}
-.sidebar a{display:block;padding:15px;border-bottom:1px solid #eee;text-decoration:none;color:#333;}
-
-.overlay{
-position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,.4);
-display:none;z-index:1500;
-}
-.overlay.active{display:block;}
-
-/* SEARCH */
-.search-box{
-position:fixed;top:80px;left:10px;right:10px;
-background:#fff;padding:10px;border-radius:10px;
-display:none;z-index:999;
-}
-.search-box.active{display:block;}
-.search-box input{width:100%;padding:10px;}
-
-/* PAGE */
-.page{display:none;padding:90px 10px;}
-.page.active{display:block;animation:fade 0.3s ease;}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(10px);}
-to{opacity:1;transform:translateY(0);}
-}
-
-/* PRODUCTS */
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:10px;
-}
-.card{
-background:#fff;border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-cursor:pointer;
-transition:0.3s;
-animation:fadeUp 0.4s ease;
-}
-.card:hover{transform:translateY(-6px);}
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
-}
-.card img{width:100%;height:160px;object-fit:cover;}
-.info{padding:10px;}
-.title{font-weight:bold;font-size:14px;}
-.price{color:#ff7300;font-weight:bold;}
-
-/* DETAIL */
-.detail-card{
-background:#fff;padding:15px;border-radius:12px;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-animation:fade 0.3s ease;
-}
-
-/* IMAGE ZOOM */
-.image-section{
-overflow:hidden;
-border-radius:12px;
-position:relative;
-}
-.image-section img{
-width:100%;
-border-radius:12px;
-transition:0.3s ease;
-cursor:zoom-in;
-}
-.image-section img:hover{
-transform:scale(1.2);
-}
-.image-section img.zoomed{
-transform:scale(1.8);
-cursor:zoom-out;
-}
-
-.detail-title{font-size:20px;font-weight:bold;margin:10px 0;}
-.detail-price{color:#ff7300;font-size:18px;font-weight:bold;}
-.desc{font-size:14px;color:#444;margin:10px 0;line-height:1.5;}
-
-button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-font-size:16px;
-cursor:pointer;
-margin-top:10px;
-transition:0.2s;
-}
-button:active{transform:scale(0.95);}
-
-/* BOTTOM NAV */
-.bottom-nav{
-position:fixed;bottom:0;left:0;width:100%;height:65px;
-background:#fff;display:flex;justify-content:space-around;
-align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.1);
-}
-.nav-item{text-align:center;font-size:20px;cursor:pointer;}
-.nav-item span{display:block;font-size:11px;}
-
-/* WHATSAPP */
-.whatsapp{
-position:fixed;right:15px;bottom:90px;
-width:55px;height:55px;border-radius:50%;
-background:#25D366;color:#fff;
-display:flex;justify-content:center;align-items:center;
-font-size:26px;cursor:pointer;
-animation:bounce 2s infinite;
-}
-@keyframes bounce{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-8px);}
-}
-</style>
-</head>
-
-<body>
+    <div class="icons">
+        <span onclick="toggleSearch()">🔍</span>
+        <span onclick="showPage('cartPage')">🛒 <span id="cartCount">0</span></span>
+    </div>
+</div>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-<h2>GIMHAN STORE</h2>
-<a href="#" onclick="showPage('homePage')">Home</a>
-<a href="#" onclick="showPage('sellPage')">Sell</a>
-<a href="#" onclick="showPage('bestPage')">Best</a>
+    <h2>GIMHAN STORE</h2>
+
+    <a href="#" onclick="showPage('homePage')">🏠 Home</a>
+    <a href="#" onclick="showPage('bestPage')">⭐ Best Sellers</a>
+    <a href="#" onclick="showPage('cartPage')">🛒 Cart</a>
+    <a href="#" onclick="showPage('aboutPage')">ℹ About</a>
 </div>
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-<!-- HEADER -->
-<div class="header">
-<div class="menu-btn" onclick="toggleMenu()">☰</div>
-<div class="logo">GIMHAN STORE</div>
-<div class="icons">
-<span onclick="toggleSearch()">🔍</span>
-<span>🛒</span>
-</div>
-</div>
-
 <!-- SEARCH -->
 <div class="search-box" id="searchBox">
-<input type="text" id="searchInput" placeholder="Search products...">
+    <input type="text" id="searchInput" placeholder="Search products...">
 </div>
 
 <!-- HOME -->
 <div class="page active" id="homePage">
-<div class="products" id="productGrid"></div>
+    <div class="products" id="productGrid"></div>
 </div>
-
-<div class="page" id="sellPage"><h2>Sell Page</h2></div>
-<div class="page" id="bestPage"><h2>Best Sellers</h2></div>
 
 <!-- DETAIL -->
 <div class="page" id="detailPage">
-<div id="detailBox"></div>
+    <div id="detailBox"></div>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- CART -->
+<div class="page" id="cartPage">
+    <h2>Shopping Cart</h2>
+    <div id="cartItems"></div>
+</div>
+
+<!-- BEST -->
+<div class="page" id="bestPage">
+    <h2>⭐ Best Sellers</h2>
+    <div class="products" id="bestGrid"></div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="aboutPage">
+    <h2>About Gimhan Store</h2>
+    <p>Welcome to Gimhan Store.</p>
+</div>
+
+<!-- Bottom Navigation -->
 <div class="bottom-nav">
-<div class="nav-item" onclick="showPage('homePage')">🏠<span>Home</span></div>
-<div class="nav-item" onclick="showPage('sellPage')">🛒<span>Cart</span></div>
-<div class="nav-item" onclick="showPage('bestPage')">⭐<span>Best</span></div>
+    <div class="nav-item" onclick="showPage('homePage')">
+        🏠
+        <span>Home</span>
+    </div>
+
+    <div class="nav-item" onclick="showPage('bestPage')">
+        ⭐
+        <span>Best</span>
+    </div>
+
+    <div class="nav-item" onclick="showPage('cartPage')">
+        🛒
+        <span>Cart</span>
+    </div>
 </div>
 
-<!-- WHATSAPP -->
+<!-- WhatsApp -->
 <div class="whatsapp" onclick="openWA()">💬</div>
 
-<script>
+// MENU
+const sidebar = document.getElementById("sidebar");
 
-const sidebar=document.getElementById("sidebar");
-
-/* MENU */
-function toggleMenu(){
-sidebar.classList.toggle("active");
-document.getElementById("overlay").classList.toggle("active");
+function toggleMenu() {
+    sidebar.classList.toggle("active");
+    document.getElementById("overlay").classList.toggle("active");
 }
 
-/* SEARCH */
-function toggleSearch(){
-document.getElementById("searchBox").classList.toggle("active");
+// SEARCH
+function toggleSearch() {
+    document.getElementById("searchBox").classList.toggle("active");
 }
 
-/* PAGE */
-function showPage(id){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+// PAGE
+function showPage(id) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
 }
 
-/* WHATSAPP */
-function openWA(){
-window.open("https://wa.me/94767209940","_blank");
+// WhatsApp
+function openWA() {
+    window.open("https://wa.me/94767209940", "_blank");
 }
 
-/* BUY */
-function buyProduct(name,price){
-let msg=Hello Gimhan Store\n\nProduct: ${name}\nPrice: Rs.${price};
-window.open(https://wa.me/94767209940?text=${encodeURIComponent(msg)},"_blank");
+// Product List
+const products = [];
+
+for (let i = 1; i <= 15; i++) {
+    products.push({
+        id: i,
+        name: "Army Soldier " + i,
+        price: 4000 + i * 500,
+        image: `https://picsum.photos/300/300?random=${i}`,
+        description: "High quality collectible Army Soldier."
+    });
 }
 
-/* PRODUCTS */
-const grid=document.getElementById("productGrid");
+// Render Products
+const grid = document.getElementById("productGrid");
 
-for(let i=1;i<=15;i++){
-let name="Army Soldier "+i;
-let price=4000+i*500;
-let img=https://picsum.photos/300/300?${i};
+function renderProducts(list) {
 
-let card=document.createElement("div");
-card.className="card";
+    grid.innerHTML = "";
 
-card.innerHTML=`
-<img src="${img}">
-<div class="info">
-<div class="title">${name}</div>
-<div class="price">Rs.${price}</div>
-</div>
-`;
+    list.forEach(product => {
 
-card.onclick=()=>{
-document.getElementById("detailBox").innerHTML=`
-<div class="detail-card">
+        const card = document.createElement("div");
+        card.className = "card";
 
-<div class="image-section">
-<img src="${img}">
-</div>
+        card.innerHTML = `
+            <img src="${product.image}">
+            <div class="info">
+                <div class="title">${product.name}</div>
+                <div class="price">Rs.${product.price}</div>
+            </div>
+        `;
 
-<div class="detail-title">${name}</div>
-<div class="detail-price">Rs.${price}</div>
+        card.onclick = () => showDetail(product);
 
-<p class="desc">
-High quality collectible Army Soldier model.
-Perfect for display and gifting.
-</p>
+        grid.appendChild(card);
 
-<button onclick="buyProduct('${name}','${price}')"
-style="background:#ff7300;color:#fff;">
-🛒 Buy Now
-</button>
+    });
 
-</div>
-`;
-
-showPage("detailPage");
-};
-
-grid.appendChild(card);
 }
 
-/* SEARCH */
-document.getElementById("searchInput").addEventListener("input",function(){
-let val=this.value.toLowerCase();
-document.querySelectorAll(".card").forEach(c=>{
-let title=c.querySelector(".title").innerText.toLowerCase();
-c.style.display=title.includes(val)?"block":"none";
-});
+renderProducts(products);
+
+// Search
+document.getElementById("searchInput").addEventListener("input", function () {
+
+    let value = this.value.toLowerCase();
+
+    let result = products.filter(product =>
+        product.name.toLowerCase().includes(value)
+    );
+
+    renderProducts(result);
+
 });
 
-/* IMAGE ZOOM TOGGLE */
+  // ==========================
+// PRODUCT DETAIL
+// ==========================
+function showDetail(product) {
+
+    document.getElementById("detailBox").innerHTML = `
+        <div class="detail-card">
+
+            <div class="image-section">
+                <img src="${product.image}" id="detailImage">
+            </div>
+
+            <div class="detail-title">${product.name}</div>
+
+            <div class="detail-price">
+                Rs.${product.price}
+            </div>
+
+            <p class="desc">
+                ${product.description}
+            </p>
+
+            <button
+                onclick="addToCart(${product.id})"
+                style="background:#ff7300;color:#fff;">
+                🛒 Add To Cart
+            </button>
+
+            <button
+                onclick="buyNow(${product.id})"
+                style="background:#25D366;color:#fff;">
+                💬 Buy Now
+            </button>
+
+        </div>
+    `;
+
+    showPage("detailPage");
+}
+
+
+// ==========================
+// CART
+// ==========================
+let cart = [];
+
+function addToCart(id){
+
+    const product = products.find(p => p.id === id);
+
+    if(product){
+
+        cart.push(product);
+
+        document.getElementById("cartCount").innerText = cart.length;
+
+        alert(product.name + " added to cart.");
+
+    }
+
+}
+
+
+// ==========================
+// BUY NOW
+// ==========================
+function buyNow(id){
+
+    const product = products.find(p => p.id === id);
+
+    if(!product) return;
+
+    const msg =
+`Hello Gimhan Store
+
+Product : ${product.name}
+Price : Rs.${product.price}`;
+
+    window.open(
+        `https://wa.me/94767209940?text=${encodeURIComponent(msg)}`,
+        "_blank"
+    );
+
+}
+
+
+// ==========================
+// IMAGE ZOOM
+// ==========================
 document.addEventListener("click",function(e){
-if(e.target.tagName==="IMG" && e.target.closest(".image-section")){
-e.target.classList.toggle("zoomed");
-}
+
+    if(
+        e.target.id === "detailImage"
+    ){
+
+        e.target.classList.toggle("zoomed");
+
+    }
+
 });
-
-</script>
-
-</body>
-</html>
